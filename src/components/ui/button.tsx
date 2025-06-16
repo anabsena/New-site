@@ -9,10 +9,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ variant = "primary", className, ...props }: ButtonProps) => {
-  const baseStyles = "px-8 py-2 text-base rounded-xl font-medium transition-colors cursor-pointer";
+  const baseStyles = "px-8 py-2 text-base rounded-xl font-medium transition-colors cursor-pointer text-primary-foreground ";
   const variantStyles = {
-    primary: "bg-primary text-primary-foreground hover:opacity-90",
-    secondary: "bg-secondary text-secondary-foreground hover:opacity-90",
+    primary: "bg-primary hover:opacity-90",
+    secondary: "bg-secondary hover:opacity-90",
   };
 
   return (

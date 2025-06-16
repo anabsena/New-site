@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "./ui/button";
 import { useState, useRef } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const Navbar = () => {
@@ -12,6 +12,9 @@ const Navbar = () => {
 
   const [openInstitutional, setOpenInstitutional] = useState(false);
   const [openPlans, setOpenPlans] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileInstitutionalOpen, setMobileInstitutionalOpen] = useState(false);
+  const [mobilePlansOpen, setMobilePlansOpen] = useState(false);
 
   const institutionalTimeout = useRef<NodeJS.Timeout | null>(null);
   const plansTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -32,8 +35,8 @@ const Navbar = () => {
           />
         </Link>
 
+        {/* Desktop menu */}
         <ul className="hidden md:flex gap-6 text-lg font-medium text-gray-800 relative">
-          {/* Home */}
           <li>
             <Link
               href="/"
@@ -45,7 +48,6 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Institucional */}
           <li className="relative group">
             <div
               onMouseEnter={() => {
@@ -95,7 +97,6 @@ const Navbar = () => {
             </div>
           </li>
 
-          {/* Nossos Planos */}
           <li className="relative group">
             <div
               onMouseEnter={() => {
@@ -145,7 +146,6 @@ const Navbar = () => {
             </div>
           </li>
 
-          {/* Outros Links */}
           <li>
             <Link
               href="/mobilidade"
@@ -156,6 +156,7 @@ const Navbar = () => {
               Mobilidade Global
             </Link>
           </li>
+
           <li>
             <Link
               href="/faq"
@@ -168,10 +169,90 @@ const Navbar = () => {
           </li>
         </ul>
 
-        <Button>
-          Acessar minha conta
-        </Button>
+        {/* Mobile menu button */}
+        <button className="md:hidden text-gray-800" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        <div className="hidden md:block">
+          <Button>
+            Acessar minha conta
+          </Button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden px-4 pb-6">
+          <ul className="flex flex-col gap-4 text-lg font-medium text-gray-800">
+            <li>
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className={isActive("/") ? "text-primary font-bold" : ""}>
+                Home
+              </Link>
+            </li>
+
+            <li>
+              <button
+                className="flex items-center gap-2"
+                onClick={() => setMobileInstitutionalOpen(!mobileInstitutionalOpen)}
+              >
+                Institucional <ChevronDown className="w-4 h-4" />
+              </button>
+              {mobileInstitutionalOpen && (
+                <ul className="ml-4 mt-2 space-y-1">
+                  <li>
+                    <Link href="/sobre" onClick={() => setMobileMenuOpen(false)} className={isActive("/sobre") ? "text-primary font-bold" : ""}>
+                      Sobre Nós
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/missao" onClick={() => setMobileMenuOpen(false)} className={isActive("/missao") ? "text-primary font-bold" : ""}>
+                      Missão e Visão
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+
+            <li>
+              <button
+                className="flex items-center gap-2"
+                onClick={() => setMobilePlansOpen(!mobilePlansOpen)}
+              >
+                Nossos Planos <ChevronDown className="w-4 h-4" />
+              </button>
+              {mobilePlansOpen && (
+                <ul className="ml-4 mt-2 space-y-1">
+                  <li>
+                    <Link href="/planos/controle" onClick={() => setMobileMenuOpen(false)} className={isActive("/planos/controle") ? "text-primary font-bold" : ""}>
+                      Planos Controle
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/planos/global" onClick={() => setMobileMenuOpen(false)} className={isActive("/planos/global") ? "text-primary font-bold" : ""}>
+                      Mobilidade Global
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+
+            <li>
+              <Link href="/mobilidade" onClick={() => setMobileMenuOpen(false)} className={isActive("/mobilidade") ? "text-primary font-bold" : ""}>
+                Mobilidade Global
+              </Link>
+            </li>
+            <li>
+              <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className={isActive("/faq") ? "text-primary font-bold" : ""}>
+                F.A.Q
+              </Link>
+            </li>
+            <li>
+              <Button className="w-full mt-2">Acessar minha conta</Button>
+            </li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };
